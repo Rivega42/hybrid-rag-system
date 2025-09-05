@@ -1,0 +1,59 @@
+# Core зависимости для Hybrid RAG System
+# Последнее обновление: Сентябрь 2024
+
+# ===== Web Framework =====
+fastapi==0.104.1  # Основной веб-фреймворк
+uvicorn[standard]==0.24.0  # ASGI сервер
+pydantic==2.5.0  # Валидация данных
+python-multipart==0.0.6  # Поддержка multipart форм
+python-jose[cryptography]==3.3.0  # JWT токены
+passlib[bcrypt]==1.7.4  # Хеширование паролей
+
+# ===== LLM и AI =====
+openai==1.3.7  # OpenAI API клиент
+anthropic==0.7.7  # Anthropic Claude API
+langchain==0.0.340  # Orchestration framework
+langchain-community==0.0.1  # Community интеграции
+transformers==4.35.2  # Hugging Face transformers
+sentence-transformers==2.2.2  # Генерация embeddings
+tokenizers==0.15.0  # Токенизация
+
+# ===== Vector Databases =====
+qdrant-client==1.7.0  # Qdrant векторная БД
+faiss-cpu==1.7.4  # FAISS для локального поиска
+
+# ===== Databases =====
+sqlalchemy==2.0.23  # ORM
+alembic==1.12.1  # Миграции БД
+asyncpg==0.29.0  # Асинхронный PostgreSQL драйвер
+psycopg2-binary==2.9.9  # PostgreSQL драйвер
+redis==5.0.1  # Redis клиент
+hiredis==2.2.3  # C-расширение для Redis
+
+# ===== Data Processing =====
+numpy==1.24.3  # Численные вычисления
+pandas==2.1.3  # Обработка данных
+scipy==1.11.4  # Научные вычисления
+scikit-learn==1.3.2  # Машинное обучение
+
+# ===== Async & Concurrency =====
+aiohttp==3.9.1  # Асинхронный HTTP клиент
+aiofiles==23.2.1  # Асинхронная работа с файлами
+
+# ===== Monitoring & Logging =====
+prometheus-client==0.19.0  # Prometheus метрики
+structlog==23.2.0  # Структурированное логирование
+python-json-logger==2.0.7  # JSON логирование
+
+# ===== Utilities =====
+python-dotenv==1.0.0  # Загрузка .env файлов
+click==8.1.7  # CLI framework
+rich==13.7.0  # Красивый вывод в терминал
+tqdm==4.66.1  # Progress bars
+pyyaml==6.0.1  # YAML обработка
+orjson==3.9.10  # Быстрый JSON
+tenacity==8.2.3  # Retry logic
+
+# ===== n8n Integration =====
+requests==2.31.0  # HTTP запросы для n8n webhooks
+websocket-client==1.6.4  # WebSocket для real-time n8n
