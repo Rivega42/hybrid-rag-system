@@ -1,14 +1,10 @@
-# Docker Compose конфигурация для Hybrid RAG System
-# Версия: 0.1.0
+version: '3.8'
 
-version: '3.9'
-
+# Сервисы Hybrid RAG системы
 services:
-  # Основной API сервер
+  # API сервер
   api:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     container_name: hybrid-rag-api
     ports:
       - "8000:8000"
@@ -17,91 +13,67 @@ services:
       - POSTGRES_HOST=postgres
       - REDIS_HOST=redis
       - QDRANT_HOST=qdrant
-    env_file:
-      - .env
     volumes:
-      - ./src:/app/src
       - ./data:/app/data
+      - ./logs:/app/logs
     depends_on:
       - postgres
       - redis
       - qdrant
-    restart: unless-stopped
     networks:
       - hybrid-rag-network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+    restart: unless-stopped
 
   # PostgreSQL для метаданных
   postgres:
-    image: postgres:16-alpine
+    image: postgres:15-alpine
     container_name: hybrid-rag-postgres
     environment:
       POSTGRES_DB: hybrid_rag
       POSTGRES_USER: hybrid_rag
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
-    ports:
-      - "5432:5432"
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
     networks:
       - hybrid-rag-network
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U hybrid_rag"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
   # Redis для кэширования
   redis:
     image: redis:7-alpine
     container_name: hybrid-rag-redis
-    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
-    ports:
-      - "6379:6379"
+    command: redis-server --appendonly yes
     volumes:
       - redis_data:/data
+    ports:
+      - "6379:6379"
     networks:
       - hybrid-rag-network
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
-  # Qdrant векторная база данных
+  # Qdrant для векторного поиска
   qdrant:
     image: qdrant/qdrant:latest
     container_name: hybrid-rag-qdrant
-    ports:
-      - "6333:6333"
-      - "6334:6334"  # gRPC порт
     volumes:
       - qdrant_data:/qdrant/storage
-    environment:
-      - QDRANT__LOG_LEVEL=INFO
+    ports:
+      - "6333:6333"
     networks:
       - hybrid-rag-network
     restart: unless-stopped
 
-  # Prometheus для метрик
+  # Prometheus для мониторинга
   prometheus:
     image: prom/prometheus:latest
     container_name: hybrid-rag-prometheus
-    ports:
-      - "9090:9090"
     volumes:
       - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/prometheus'
+    ports:
+      - "9090:9090"
     networks:
       - hybrid-rag-network
     restart: unless-stopped
@@ -110,55 +82,26 @@ services:
   grafana:
     image: grafana/grafana:latest
     container_name: hybrid-rag-grafana
-    ports:
-      - "3000:3000"
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
-      - GF_INSTALL_PLUGINS=redis-datasource
     volumes:
       - grafana_data:/var/lib/grafana
-      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards
-      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources
+      - ./monitoring/grafana:/etc/grafana/provisioning
+    ports:
+      - "3000:3000"
     depends_on:
       - prometheus
     networks:
       - hybrid-rag-network
     restart: unless-stopped
 
-  # Nginx reverse proxy (опционально)
-  nginx:
-    image: nginx:alpine
-    container_name: hybrid-rag-nginx
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/sites-enabled:/etc/nginx/sites-enabled
-      - ./ssl:/etc/nginx/ssl
-    depends_on:
-      - api
-    networks:
-      - hybrid-rag-network
-    restart: unless-stopped
-    profiles:
-      - production
-
-volumes:
-  postgres_data:
-    driver: local
-  redis_data:
-    driver: local
-  qdrant_data:
-    driver: local
-  prometheus_data:
-    driver: local
-  grafana_data:
-    driver: local
-
 networks:
   hybrid-rag-network:
     driver: bridge
-    ipam:
-      config:
-        - subnet: 172.28.0.0/16
+
+volumes:
+  postgres_data:
+  redis_data:
+  qdrant_data:
+  prometheus_data:
+  grafana_data:
