@@ -6,6 +6,9 @@
     <title>Hybrid RAG - Гибридная система поиска и генерации нового поколения</title>
     <meta name="description" content="Production-ready гибридная RAG система, объединяющая преимущества классического и Agentic RAG для оптимального баланса скорости, стоимости и качества.">
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,28 +17,35 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <!-- Custom Styles -->
     <style>
-        /* Custom Cal.com минималистичный стиль */
         @font-face {
             font-family: 'Cal Sans';
-            src: url('https://cal.com/fonts/CalSans-SemiBold.woff2') format('woff2');
-            font-weight: 600;
-            font-style: normal;
+            src: url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
         }
         
         :root {
-            /* Light Mode */
+            /* Light Mode Colors */
             --hrag-bg-emphasis: #e5e7eb;
             --hrag-bg: white;
             --hrag-bg-subtle: #f3f4f6;
             --hrag-bg-muted: #f9fafb;
             --hrag-bg-inverted: #111827;
             
-            /* Статусные цвета (минимальное использование) */
+            /* Status Colors */
             --hrag-success: #10b981;
             --hrag-error: #ef4444;
             --hrag-warning: #f59e0b;
             --hrag-info: #3b82f6;
+            
+            /* Spacing */
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-2xl: 48px;
+            --spacing-3xl: 64px;
         }
         
         * {
@@ -45,366 +55,348 @@
         }
         
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             color: #111827;
             background: var(--hrag-bg);
             line-height: 1.75;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
         
         h1, h2, h3 {
-            font-family: 'Cal Sans', 'Inter', sans-serif;
-            letter-spacing: -0.02em;
+            font-family: 'Space Grotesk', 'Cal Sans', sans-serif;
             font-weight: 600;
+            letter-spacing: -0.02em;
         }
         
-        h1 { font-size: 48px; line-height: 1.1; }
-        h2 { font-size: 36px; line-height: 1.2; }
-        h3 { font-size: 24px; line-height: 1.3; }
-        
-        @media (min-width: 768px) {
-            h1 { font-size: 64px; }
-            h2 { font-size: 40px; }
-            h3 { font-size: 28px; }
+        h1 {
+            font-size: 64px;
+            line-height: 1.1;
         }
         
-        /* Анимации - минималистичные и быстрые */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        h2 {
+            font-size: 40px;
+            line-height: 1.2;
         }
         
-        .animate-fade-in {
-            animation: fadeIn 0.3s ease-out forwards;
-        }
-        
-        /* Кнопки в стиле Cal.com */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px 24px;
-            font-size: 16px;
-            font-weight: 500;
-            border-radius: 8px;
-            transition: all 150ms ease;
-            cursor: pointer;
-            border: 1px solid transparent;
-            text-decoration: none;
+        h3 {
+            font-size: 28px;
+            line-height: 1.3;
         }
         
         .btn-primary {
-            background: #111827;
+            background: var(--hrag-bg-inverted);
             color: white;
-            border-color: #111827;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 150ms ease-in-out;
+            border: 1px solid var(--hrag-bg-inverted);
         }
         
         .btn-primary:hover {
             background: #1f2937;
-            border-color: #1f2937;
+            transform: translateY(-1px);
         }
         
         .btn-secondary {
             background: transparent;
-            color: #111827;
-            border-color: #e5e7eb;
+            color: var(--hrag-bg-inverted);
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            font-weight: 500;
+            transition: all 150ms ease-in-out;
         }
         
         .btn-secondary:hover {
-            background: #f9fafb;
+            background: var(--hrag-bg-subtle);
+            border-color: #d1d5db;
         }
         
-        /* Метрики */
-        .metric {
-            padding: 24px;
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            transition: all 150ms ease;
-        }
-        
-        .metric:hover {
-            background: #f9fafb;
-        }
-        
-        /* Code blocks */
-        .code-block {
-            background: #f9fafb;
+        .metric-card {
             border: 1px solid #e5e7eb;
             border-radius: 8px;
-            padding: 20px;
-            font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
-            font-size: 14px;
-            line-height: 1.5;
-            overflow-x: auto;
+            padding: 24px;
+            background: white;
+            transition: all 150ms ease-in-out;
         }
         
-        /* Navigation */
-        nav {
-            height: 64px;
-            border-bottom: 1px solid #e5e7eb;
+        .metric-card:hover {
+            background: var(--hrag-bg-muted);
         }
         
-        .nav-link {
-            color: #6b7280;
-            text-decoration: none;
-            padding: 8px 16px;
-            transition: color 150ms ease;
-        }
-        
-        .nav-link:hover {
-            color: #111827;
-        }
-        
-        .nav-link.active {
-            color: #111827;
-            position: relative;
-        }
-        
-        .nav-link.active::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 16px;
-            right: 16px;
-            height: 2px;
-            background: #111827;
-        }
-        
-        /* Features grid */
         .feature-card {
-            padding: 32px;
             border: 1px solid #e5e7eb;
             border-radius: 12px;
-            transition: all 150ms ease;
+            padding: 32px;
+            background: white;
+            transition: all 150ms ease-in-out;
         }
         
         .feature-card:hover {
-            background: #f9fafb;
+            background: var(--hrag-bg-subtle);
             transform: translateY(-2px);
         }
         
-        /* Статистика */
-        .stat-number {
-            font-family: 'Cal Sans', sans-serif;
-            font-size: 48px;
-            line-height: 1;
-            margin-bottom: 8px;
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 48px;
+            }
+            
+            h2 {
+                font-size: 32px;
+            }
+            
+            h3 {
+                font-size: 24px;
+            }
         }
         
-        /* Smooth scroll */
-        html {
-            scroll-behavior: smooth;
+        /* Subtle animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
         }
     </style>
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="fixed top-0 left-0 right-0 bg-white z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center">
-                    <span class="text-xl font-semibold">Hybrid RAG</span>
+    <nav class="fixed top-0 w-full bg-white/95 backdrop-blur-sm border-b border-gray-200 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-8">
+                    <a href="/" class="text-2xl font-bold">HRAG</a>
+                    <div class="hidden md:flex space-x-6">
+                        <a href="#features" class="text-gray-600 hover:text-black transition">Возможности</a>
+                        <a href="#performance" class="text-gray-600 hover:text-black transition">Производительность</a>
+                        <a href="#pricing" class="text-gray-600 hover:text-black transition">Тарифы</a>
+                        <a href="https://github.com/Rivega42/hybrid-rag-system" class="text-gray-600 hover:text-black transition">GitHub</a>
+                    </div>
                 </div>
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#features" class="nav-link">Возможности</a>
-                    <a href="#performance" class="nav-link">Производительность</a>
-                    <a href="#pricing" class="nav-link">Тарифы</a>
-                    <a href="https://github.com/Rivega42/hybrid-rag-system" class="nav-link">GitHub</a>
-                    <a href="#demo" class="btn btn-primary ml-4">Демо</a>
+                <div class="flex space-x-4">
+                    <button class="btn-secondary">Войти</button>
+                    <button class="btn-primary">Начать бесплатно</button>
                 </div>
             </div>
         </div>
     </nav>
-
+    
     <!-- Hero Section -->
-    <section class="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+    <section class="pt-32 pb-20 px-6">
         <div class="max-w-7xl mx-auto">
-            <div class="text-center max-w-4xl mx-auto">
-                <h1 class="animate-fade-in mb-6">
-                    Гибридный RAG<br>нового поколения
-                </h1>
-                <p class="text-xl text-gray-600 mb-12 animate-fade-in" style="animation-delay: 0.1s;">
+            <div class="text-center max-w-4xl mx-auto fade-in">
+                <h1 class="mb-6">Гибридный RAG нового поколения</h1>
+                <p class="text-xl text-gray-600 mb-8">
                     Интеллектуальная система, которая автоматически выбирает между классическим 
-                    и агентным подходами для оптимального баланса скорости, стоимости и качества ответов
+                    и агентным подходами для оптимального баланса скорости, стоимости и качества
                 </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in" style="animation-delay: 0.2s;">
-                    <a href="https://github.com/Rivega42/hybrid-rag-system" class="btn btn-primary">
-                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                        </svg>
-                        Начать использование
-                    </a>
-                    <a href="#demo" class="btn btn-secondary">
+                <div class="flex justify-center space-x-4">
+                    <button class="btn-primary text-lg px-8 py-4">
+                        Начать использование →
+                    </button>
+                    <button class="btn-secondary text-lg px-8 py-4">
                         Посмотреть демо
-                    </a>
+                    </button>
                 </div>
             </div>
             
-            <!-- Метрики -->
+            <!-- Metrics -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mt-20">
-                <div class="metric text-center">
-                    <div class="stat-number">150ms</div>
-                    <div class="text-gray-600">P50 латентность</div>
+                <div class="metric-card text-center">
+                    <div class="text-3xl font-bold mb-2">150ms</div>
+                    <div class="text-gray-600">Медианная латентность</div>
                 </div>
-                <div class="metric text-center">
-                    <div class="stat-number">91%</div>
+                <div class="metric-card text-center">
+                    <div class="text-3xl font-bold mb-2">91%</div>
                     <div class="text-gray-600">Точность ответов</div>
                 </div>
-                <div class="metric text-center">
-                    <div class="stat-number">10x</div>
+                <div class="metric-card text-center">
+                    <div class="text-3xl font-bold mb-2">10x</div>
                     <div class="text-gray-600">Снижение затрат</div>
                 </div>
-                <div class="metric text-center">
-                    <div class="stat-number">99.9%</div>
-                    <div class="text-gray-600">Доступность</div>
+                <div class="metric-card text-center">
+                    <div class="text-3xl font-bold mb-2">99.9%</div>
+                    <div class="text-gray-600">Доступность API</div>
                 </div>
             </div>
         </div>
     </section>
-
+    
     <!-- Features Section -->
-    <section id="features" class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="features" class="py-20 px-6 bg-gray-50">
+        <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16">
                 <h2 class="mb-4">Ключевые возможности</h2>
-                <p class="text-xl text-gray-600">
-                    Всё необходимое для построения интеллектуальных AI-систем
-                </p>
+                <p class="text-xl text-gray-600">Всё необходимое для production-ready RAG системы</p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="feature-card">
-                    <div class="w-12 h-12 mb-4">
-                        <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="mb-3">Интеллектуальная маршрутизация</h3>
-                    <p class="text-gray-600">
-                        ML-модель автоматически определяет оптимальную стратегию обработки для каждого запроса
-                    </p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="w-12 h-12 mb-4">
-                        <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="mb-3">Многоуровневое кэширование</h3>
-                    <p class="text-gray-600">
-                        Трёхуровневая система кэша для мгновенных ответов на повторяющиеся запросы
-                    </p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="w-12 h-12 mb-4">
-                        <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="w-12 h-12 bg-gray-100 rounded-lg mb-6 flex items-center justify-center">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                         </svg>
                     </div>
-                    <h3 class="mb-3">Полный мониторинг</h3>
+                    <h3 class="mb-4">Интеллектуальная маршрутизация</h3>
                     <p class="text-gray-600">
-                        Real-time метрики производительности, качества и стоимости каждого запроса
+                        ML-модель анализирует сложность запроса и автоматически выбирает 
+                        оптимальную стратегию обработки
                     </p>
                 </div>
                 
                 <div class="feature-card">
-                    <div class="w-12 h-12 mb-4">
-                        <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                    <div class="w-12 h-12 bg-gray-100 rounded-lg mb-6 flex items-center justify-center">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                         </svg>
                     </div>
-                    <h3 class="mb-3">Гибридный подход</h3>
+                    <h3 class="mb-4">Многоуровневое кэширование</h3>
                     <p class="text-gray-600">
-                        Объединение классического и агентного RAG для оптимального результата
+                        Трёхуровневая система кэширования для мгновенных ответов на 
+                        повторяющиеся и похожие запросы
                     </p>
                 </div>
                 
                 <div class="feature-card">
-                    <div class="w-12 h-12 mb-4">
-                        <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                    <div class="w-12 h-12 bg-gray-100 rounded-lg mb-6 flex items-center justify-center">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                         </svg>
                     </div>
-                    <h3 class="mb-3">Отказоустойчивость</h3>
+                    <h3 class="mb-4">Отказоустойчивость</h3>
                     <p class="text-gray-600">
-                        Каскадные fallback механизмы обеспечивают работу даже при сбоях
+                        Каскадные fallback механизмы обеспечивают работу системы даже 
+                        при частичных отказах компонентов
                     </p>
                 </div>
                 
                 <div class="feature-card">
-                    <div class="w-12 h-12 mb-4">
-                        <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    <div class="w-12 h-12 bg-gray-100 rounded-lg mb-6 flex items-center justify-center">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                         </svg>
                     </div>
-                    <h3 class="mb-3">n8n интеграция</h3>
+                    <h3 class="mb-4">Real-time мониторинг</h3>
                     <p class="text-gray-600">
-                        Готовая интеграция с n8n для создания сложных автоматизаций
+                        Полная наблюдаемость с метриками производительности, качества 
+                        и стоимости каждого запроса
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="w-12 h-12 bg-gray-100 rounded-lg mb-6 flex items-center justify-center">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="mb-4">n8n интеграция</h3>
+                    <p class="text-gray-600">
+                        Глубокая интеграция с n8n для создания сложных workflow 
+                        и автоматизации процессов
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="w-12 h-12 bg-gray-100 rounded-lg mb-6 flex items-center justify-center">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="mb-4">Масштабируемость</h3>
+                    <p class="text-gray-600">
+                        Kubernetes-native архитектура с автоматическим горизонтальным 
+                        масштабированием под нагрузкой
                     </p>
                 </div>
             </div>
         </div>
     </section>
-
+    
     <!-- Performance Section -->
-    <section id="performance" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="performance" class="py-20 px-6">
+        <div class="max-w-7xl mx-auto">
             <div class="text-center mb-16">
                 <h2 class="mb-4">Производительность</h2>
-                <p class="text-xl text-gray-600">
-                    Сравнение с традиционными подходами
-                </p>
+                <p class="text-xl text-gray-600">Сравнение различных подходов к RAG</p>
             </div>
             
-            <!-- Comparison Table -->
             <div class="overflow-x-auto">
-                <table class="w-full">
+                <table class="w-full border border-gray-200 rounded-lg">
                     <thead>
-                        <tr class="border-b">
-                            <th class="text-left py-4 px-6 font-medium">Метрика</th>
-                            <th class="text-center py-4 px-6 font-medium">Classic RAG</th>
-                            <th class="text-center py-4 px-6 font-medium bg-gray-50">Hybrid RAG</th>
-                            <th class="text-center py-4 px-6 font-medium">Agentic RAG</th>
+                        <tr class="bg-gray-50 border-b border-gray-200">
+                            <th class="text-left px-6 py-4 font-medium">Метрика</th>
+                            <th class="text-center px-6 py-4 font-medium">Classic RAG</th>
+                            <th class="text-center px-6 py-4 font-medium">Hybrid RAG</th>
+                            <th class="text-center px-6 py-4 font-medium">Agentic RAG</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="border-b">
-                            <td class="py-4 px-6">Латентность (P50)</td>
-                            <td class="text-center py-4 px-6">150ms</td>
-                            <td class="text-center py-4 px-6 bg-gray-50 font-semibold">280ms</td>
-                            <td class="text-center py-4 px-6">2.1s</td>
+                        <tr class="border-b border-gray-200">
+                            <td class="px-6 py-4 font-medium">Латентность (P50)</td>
+                            <td class="text-center px-6 py-4">150ms</td>
+                            <td class="text-center px-6 py-4 font-bold">280ms</td>
+                            <td class="text-center px-6 py-4">2.1s</td>
                         </tr>
-                        <tr class="border-b">
-                            <td class="py-4 px-6">Точность</td>
-                            <td class="text-center py-4 px-6">72%</td>
-                            <td class="text-center py-4 px-6 bg-gray-50 font-semibold">86%</td>
-                            <td class="text-center py-4 px-6">91%</td>
+                        <tr class="border-b border-gray-200">
+                            <td class="px-6 py-4 font-medium">Латентность (P95)</td>
+                            <td class="text-center px-6 py-4">300ms</td>
+                            <td class="text-center px-6 py-4 font-bold">850ms</td>
+                            <td class="text-center px-6 py-4">5.3s</td>
                         </tr>
-                        <tr class="border-b">
-                            <td class="py-4 px-6">Стоимость/запрос</td>
-                            <td class="text-center py-4 px-6">$0.001</td>
-                            <td class="text-center py-4 px-6 bg-gray-50 font-semibold">$0.003</td>
-                            <td class="text-center py-4 px-6">$0.008</td>
+                        <tr class="border-b border-gray-200">
+                            <td class="px-6 py-4 font-medium">Точность</td>
+                            <td class="text-center px-6 py-4">72%</td>
+                            <td class="text-center px-6 py-4 font-bold">86%</td>
+                            <td class="text-center px-6 py-4">91%</td>
                         </tr>
-                        <tr class="border-b">
-                            <td class="py-4 px-6">Токены/запрос</td>
-                            <td class="text-center py-4 px-6">500</td>
-                            <td class="text-center py-4 px-6 bg-gray-50 font-semibold">1,200</td>
-                            <td class="text-center py-4 px-6">3,500</td>
+                        <tr class="border-b border-gray-200">
+                            <td class="px-6 py-4 font-medium">Полнота ответа</td>
+                            <td class="text-center px-6 py-4">68%</td>
+                            <td class="text-center px-6 py-4 font-bold">84%</td>
+                            <td class="text-center px-6 py-4">93%</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 font-medium">Стоимость/запрос</td>
+                            <td class="text-center px-6 py-4">$0.001</td>
+                            <td class="text-center px-6 py-4 font-bold">$0.003</td>
+                            <td class="text-center px-6 py-4">$0.008</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             
-            <!-- Code Example -->
-            <div class="mt-16">
-                <h3 class="mb-8 text-center">Простой пример использования</h3>
-                <div class="code-block">
-<pre><code>from hybrid_rag import HybridRAG
+            <div class="mt-8 p-6 bg-gray-50 rounded-lg">
+                <p class="text-center text-gray-600">
+                    Hybrid RAG обеспечивает оптимальный баланс между всеми метриками, 
+                    автоматически выбирая подход в зависимости от сложности запроса
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Code Example -->
+    <section class="py-20 px-6 bg-gray-50">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="mb-4">Простая интеграция</h2>
+                <p class="text-xl text-gray-600">Начните использовать за 5 минут</p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="border-b border-gray-200 px-6 py-3 bg-gray-50">
+                        <span class="text-sm text-gray-600">Python</span>
+                    </div>
+                    <pre class="p-6 overflow-x-auto"><code class="text-sm">from hybrid_rag import HybridRAG
 
 # Инициализация системы
 rag = HybridRAG(
@@ -429,184 +421,99 @@ print(result.strategy_used)  # "agentic_rag"</code></pre>
             </div>
         </div>
     </section>
-
-    <!-- Pricing Section -->
-    <section id="pricing" class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="mb-4">Простые и прозрачные тарифы</h2>
-                <p class="text-xl text-gray-600">
-                    Open Source с опциональной коммерческой поддержкой
-                </p>
+    
+    <!-- CTA Section -->
+    <section class="py-20 px-6">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="mb-6">Готовы начать?</h2>
+            <p class="text-xl text-gray-600 mb-8">
+                Присоединяйтесь к сообществу разработчиков, использующих 
+                Hybrid RAG для создания интеллектуальных приложений
+            </p>
+            <div class="flex justify-center space-x-4">
+                <a href="https://github.com/Rivega42/hybrid-rag-system" class="btn-primary text-lg px-8 py-4">
+                    Посмотреть на GitHub →
+                </a>
+                <button class="btn-secondary text-lg px-8 py-4">
+                    Читать документацию
+                </button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="border-t border-gray-200 py-12 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="font-bold mb-4">Продукт</h4>
+                    <ul class="space-y-2 text-gray-600">
+                        <li><a href="#features" class="hover:text-black transition">Возможности</a></li>
+                        <li><a href="#performance" class="hover:text-black transition">Производительность</a></li>
+                        <li><a href="#pricing" class="hover:text-black transition">Тарифы</a></li>
+                        <li><a href="/roadmap" class="hover:text-black transition">Roadmap</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Ресурсы</h4>
+                    <ul class="space-y-2 text-gray-600">
+                        <li><a href="/docs" class="hover:text-black transition">Документация</a></li>
+                        <li><a href="/whitepaper" class="hover:text-black transition">White Paper</a></li>
+                        <li><a href="/blog" class="hover:text-black transition">Блог</a></li>
+                        <li><a href="/benchmarks" class="hover:text-black transition">Бенчмарки</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Сообщество</h4>
+                    <ul class="space-y-2 text-gray-600">
+                        <li><a href="https://github.com/Rivega42/hybrid-rag-system" class="hover:text-black transition">GitHub</a></li>
+                        <li><a href="https://t.me/hybrid_rag_ru" class="hover:text-black transition">Telegram</a></li>
+                        <li><a href="https://discord.gg/hybridrag" class="hover:text-black transition">Discord</a></li>
+                        <li><a href="https://twitter.com/HybridRAG" class="hover:text-black transition">Twitter</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Компания</h4>
+                    <ul class="space-y-2 text-gray-600">
+                        <li><a href="/about" class="hover:text-black transition">О нас</a></li>
+                        <li><a href="/careers" class="hover:text-black transition">Карьера</a></li>
+                        <li><a href="/contact" class="hover:text-black transition">Контакты</a></li>
+                        <li><a href="/privacy" class="hover:text-black transition">Конфиденциальность</a></li>
+                    </ul>
+                </div>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                <!-- Open Source -->
-                <div class="bg-white border border-gray-200 rounded-xl p-8">
-                    <h3 class="mb-2">Open Source</h3>
-                    <div class="text-3xl font-bold mb-6">Бесплатно</div>
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Полный доступ к коду</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Базовая документация</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Community поддержка</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>MIT лицензия</span>
-                        </li>
-                    </ul>
-                    <a href="https://github.com/Rivega42/hybrid-rag-system" class="btn btn-secondary w-full">
-                        Начать бесплатно
-                    </a>
-                </div>
-                
-                <!-- Pro -->
-                <div class="bg-white border-2 border-gray-900 rounded-xl p-8 relative">
-                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-4 py-1 rounded-full text-sm">
-                        Популярный
-                    </div>
-                    <h3 class="mb-2">Pro</h3>
-                    <div class="text-3xl font-bold mb-6">$999<span class="text-lg font-normal text-gray-600">/месяц</span></div>
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Всё из Open Source</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Приоритетная поддержка</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Расширенный мониторинг</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Обучение команды</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>SLA 99.9%</span>
-                        </li>
-                    </ul>
-                    <a href="mailto:support@mixbase.ru" class="btn btn-primary w-full">
-                        Связаться с нами
-                    </a>
-                </div>
-                
-                <!-- Enterprise -->
-                <div class="bg-white border border-gray-200 rounded-xl p-8">
-                    <h3 class="mb-2">Enterprise</h3>
-                    <div class="text-3xl font-bold mb-6">Custom</div>
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Всё из Pro</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>On-premise развертывание</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Кастомная разработка</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>Выделенная команда</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-5 h-5 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span>SLA 99.99%</span>
-                        </li>
-                    </ul>
-                    <a href="mailto:support@mixbase.ru" class="btn btn-secondary w-full">
-                        Обсудить
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="py-20 bg-gray-900 text-white">
-        <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-            <h2 class="mb-4 text-white">Готовы начать?</h2>
-            <p class="text-xl mb-8 text-gray-300">
-                Присоединяйтесь к сообществу разработчиков, использующих Hybrid RAG
-                для создания интеллектуальных AI-систем нового поколения
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="https://github.com/Rivega42/hybrid-rag-system" class="btn btn-primary bg-white text-gray-900 hover:bg-gray-100">
-                    Открыть на GitHub
-                </a>
-                <a href="https://t.me/hybrid_rag_ru" class="btn btn-secondary border-white text-white hover:bg-gray-800">
-                    Telegram сообщество
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="py-12 bg-white border-t border-gray-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-4 md:mb-0">
-                    <span class="text-xl font-semibold">Hybrid RAG</span>
-                    <p class="text-gray-600 mt-2">Сделано с ❤️ для русскоязычного AI сообщества</p>
-                </div>
-                <div class="flex space-x-6">
-                    <a href="https://github.com/Rivega42/hybrid-rag-system" class="text-gray-600 hover:text-gray-900">
-                        GitHub
-                    </a>
-                    <a href="https://t.me/hybrid_rag_ru" class="text-gray-600 hover:text-gray-900">
-                        Telegram
-                    </a>
-                    <a href="mailto:support@mixbase.ru" class="text-gray-600 hover:text-gray-900">
-                        Email
-                    </a>
-                </div>
-            </div>
-            <div class="mt-8 text-center text-gray-600 text-sm">
-                © 2024 Hybrid RAG. MIT License.
+            <div class="mt-12 pt-8 border-t border-gray-200 text-center text-gray-600">
+                <p>© 2024 Hybrid RAG System. Сделано с ❤️ для русскоязычного AI сообщества.</p>
             </div>
         </div>
     </footer>
+    
+    <!-- Minimal JavaScript -->
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Add scroll effect to navigation
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 10) {
+                nav.classList.add('shadow-sm');
+            } else {
+                nav.classList.remove('shadow-sm');
+            }
+        });
+    </script>
 </body>
 </html>
